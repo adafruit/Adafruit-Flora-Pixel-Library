@@ -11,13 +11,18 @@
 #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) || defined (__AVR_ATmega328) || (__AVR_ATmega8__)
   // sadly the library must send data so fast we have to 'hardcode' the pins
   #define DATAPORT PORTD
-  #define DATAPIN  2
+  #define DATAPIN  4
   #define DATADIR  DDRD 
 #elif defined(__AVR_ATmega32U4__)
   // sadly the library must send data so fast we have to 'hardcode' the pins
   #define DATAPORT PORTD
   #define DATAPIN  7
   #define DATADIR  DDRD
+#elif defined(__AVR_ATtiny85__)
+  // sadly the library must send data so fast we have to 'hardcode' the pins
+  #define DATAPORT PORTB
+  #define DATAPIN  1
+  #define DATADIR  DDRB
 #endif
 
 #define dataPinHigh DATAPORT |= (1 << DATAPIN)

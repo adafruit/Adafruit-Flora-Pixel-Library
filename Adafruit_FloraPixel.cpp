@@ -45,6 +45,21 @@ void Adafruit_FloraPixel::setPixelColor(uint16_t n, RGBPixel p) {
   pixels[n].blue = p.blue;
 }
 
+#if (F_CPU == 8000000UL)
+#define FIRSTNOPS "nop\n"
+#define MIDDLENOPS "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n"
+#define LASTNOPS "nop\n"
+#elif (F_CPU == 10000000UL)
+#define FIRSTNOPS "nop\n" "nop\n"
+#define MIDDLENOPS  "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n"
+#define LASTNOPS "nop\n"
+#elif (F_CPU == 16000000UL)
+#define FIRSTNOPS "nop\n" "nop\n" "nop\n" "nop\n" "nop\n"
+#define MIDDLENOPS "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" 
+#define LASTNOPS "nop\n" "nop\n" "nop\n" "nop\n"  "nop\n"
+#else
+#error "CPU SPEED NOT SUPPORTED"
+#endif
 
 void __attribute__((noinline)) Adafruit_FloraPixel::show(void) {
   RGBPixel *strip = pixels;
@@ -70,73 +85,65 @@ void __attribute__((noinline)) Adafruit_FloraPixel::show(void) {
 // bit #0
         "rol __tmp_reg__\n" // Rotate left through carry.
         "sbi %2, %3\n" // Drive the line high.
-        "nop\n"
+	FIRSTNOPS
         "brcs .+2\n" "cbi %2, %3\n" // If the bit to send is 0, drive the line low now (500ns)
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" 
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n"
+	MIDDLENOPS
         "brcc .+2\n" "cbi %2, %3\n" // If the bit to send is 1, drive the line low now.
+        "rol __tmp_reg__\n" // Rotate left through carry.
+	LASTNOPS
 // bit #1
-        "rol __tmp_reg__\n" // Rotate left through carry.
-        "nop\n"
         "sbi %2, %3\n" // Drive the line high.
-        "nop\n"
+        FIRSTNOPS
         "brcs .+2\n" "cbi %2, %3\n" // If the bit to send is 0, drive the line low now (500ns)
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" 
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n"
+	MIDDLENOPS
         "brcc .+2\n" "cbi %2, %3\n" // If the bit to send is 1, drive the line low now.
+        "rol __tmp_reg__\n" // Rotate left through carry.
+	LASTNOPS
 // bit #2
-        "rol __tmp_reg__\n" // Rotate left through carry.
-        "nop\n"
         "sbi %2, %3\n" // Drive the line high.
-        "nop\n"
+	FIRSTNOPS
         "brcs .+2\n" "cbi %2, %3\n" // If the bit to send is 0, drive the line low now (500ns)
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" 
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n"
+	MIDDLENOPS
         "brcc .+2\n" "cbi %2, %3\n" // If the bit to send is 1, drive the line low now.
+        "rol __tmp_reg__\n" // Rotate left through carry.
+	LASTNOPS
 // bit #3
-        "rol __tmp_reg__\n" // Rotate left through carry.
-        "nop\n"
         "sbi %2, %3\n" // Drive the line high.
-        "nop\n"
+	FIRSTNOPS
         "brcs .+2\n" "cbi %2, %3\n" // If the bit to send is 0, drive the line low now (500ns)
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" 
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n"
+	MIDDLENOPS
         "brcc .+2\n" "cbi %2, %3\n" // If the bit to send is 1, drive the line low now.
+        "rol __tmp_reg__\n" // Rotate left through carry.
+	LASTNOPS
 // bit #4
-        "rol __tmp_reg__\n" // Rotate left through carry.
-        "nop\n"
         "sbi %2, %3\n" // Drive the line high.
-        "nop\n"
+	FIRSTNOPS
         "brcs .+2\n" "cbi %2, %3\n" // If the bit to send is 0, drive the line low now (500ns)
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" 
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n"
+	MIDDLENOPS
         "brcc .+2\n" "cbi %2, %3\n" // If the bit to send is 1, drive the line low now.
+        "rol __tmp_reg__\n" // Rotate left through carry.
+	LASTNOPS
 // bit #5
-        "rol __tmp_reg__\n" // Rotate left through carry.
-        "nop\n"
         "sbi %2, %3\n" // Drive the line high.
-        "nop\n"
+	FIRSTNOPS
         "brcs .+2\n" "cbi %2, %3\n" // If the bit to send is 0, drive the line low now (500ns)
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" 
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n"
+	MIDDLENOPS
         "brcc .+2\n" "cbi %2, %3\n" // If the bit to send is 1, drive the line low now.
+        "rol __tmp_reg__\n" // Rotate left through carry.
+        LASTNOPS
 // bit #6
-        "rol __tmp_reg__\n" // Rotate left through carry.
-        "nop\n"
         "sbi %2, %3\n" // Drive the line high.
-        "nop\n"
+	FIRSTNOPS
         "brcs .+2\n" "cbi %2, %3\n" // If the bit to send is 0, drive the line low now (500ns)
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" 
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n"
+	MIDDLENOPS
         "brcc .+2\n" "cbi %2, %3\n" // If the bit to send is 1, drive the line low now.
-// bit #7
         "rol __tmp_reg__\n" // Rotate left through carry.
-        "nop\n"
+        LASTNOPS
+// bit #7
         "sbi %2, %3\n" // Drive the line high.
-        "nop\n"
+	FIRSTNOPS
         "brcs .+2\n" "cbi %2, %3\n" // If the bit to send is 0, drive the line low now (500ns)
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n" 
-        "nop\n" "nop\n" "nop\n" "nop\n" "nop\n"
+	MIDDLENOPS
         "brcc .+2\n" "cbi %2, %3\n" // If the bit to send is 1, drive the line low now.
 // done!
         "ret\n"
