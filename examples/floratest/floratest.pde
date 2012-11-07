@@ -2,8 +2,7 @@
 
 /*****************************************************************************
 Example sketch for driving Adafruit Flora pixels
-
-Hardcoded to PD2 at this time (change in header file)
+Connect the pixel(s) to Digital 6 (low right hand)
 *****************************************************************************/
 
 // Set the first variable to the NUMBER of pixels. 25 = 25 pixels in a row
