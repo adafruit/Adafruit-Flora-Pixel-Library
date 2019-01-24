@@ -1,3 +1,5 @@
+This library has been deprecated and fully replaced with https://github.com/adafruit/Adafruit_NeoPixel which supports modern 800 KHz and 400 KHz (for most chipsets)
+
 Adafruit-Flora-Pixel-Library
 ============================
 
